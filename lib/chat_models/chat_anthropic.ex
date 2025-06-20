@@ -1445,6 +1445,16 @@ defmodule LangChain.ChatModels.ChatAnthropic do
     raise LangChainError, "Anthropic does not support image_url"
   end
 
+  def content_part_for_api(%ContentPart{type: :file_url} = part) do
+    %{
+      "type" => "document",
+      "source" => %{
+        "type" => "url",
+        "url" => part.content
+      }
+    }
+  end
+
   defp get_parameters(%Function{parameters: [], parameters_schema: nil} = _fun) do
     %{
       "type" => "object",
